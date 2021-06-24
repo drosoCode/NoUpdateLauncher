@@ -1,0 +1,8 @@
+vdf
+steamctl
+PySimpleGUI
+appdirs
+pyinstaller
+requests
+winshell
+pywin32
