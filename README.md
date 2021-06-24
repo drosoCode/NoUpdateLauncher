@@ -18,7 +18,16 @@ To launch your game, you can open this software or use the shortcut created. The
 |Play|performs an update check  and launch the game (same function as the shortcut)|
 |Check Updates|performs an update check|
 
+## CLI
+|Argument|Long Argument|Description|
+|--|--|--|
+|-a [APPID]|--appid [APPID]|perform an update check and start a game|
+|-y|--update|automatically accept an update, if available|
+|-n|--no-update|automatically deny an update, if available|
+|-s|--steam|automatically accept a steam restart|
+|-ns|--no-steam|automatically deny a steam restart|
+
+
 ## Developement
 - To install the required tools, run `pip3 install -r requirements.txt`
 - To package the software as an executable, run `pyinstaller -F main.py`
-- To perform an update check and start a game, run `noupdatelauncher.exe -a <APPID>`

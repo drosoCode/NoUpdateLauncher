@@ -341,24 +341,29 @@ def saveConfig():
 
 
 def askUpdateWindow(game, new):
-    txt = f"There is an update available for {game}"
-    if new:
-        txt = f"There is a NEW update available for {game}"
-    layout = [
-        [sg.Text(txt)],
-        [sg.Button("Skip Update"), sg.Button("Update")],
-    ]
-    window = sg.Window("NoUpdate Launcher", layout)
-    while True:
-        event, values = window.read()
-        window.close()
-        # See if user wants to quit or window was closed
-        if event == sg.WINDOW_CLOSED:
-            return -1
-        elif event == "Update":
-            return 0
-        else:
-            return 1
+    if args.update:
+        return 0
+    elif args.no_update:
+        return 1
+    else:
+        txt = f"There is an update available for {game}"
+        if new:
+            txt = f"There is a NEW update available for {game}"
+        layout = [
+            [sg.Text(txt)],
+            [sg.Button("Skip Update"), sg.Button("Update")],
+        ]
+        window = sg.Window("NoUpdate Launcher", layout)
+        while True:
+            event, values = window.read()
+            window.close()
+            # See if user wants to quit or window was closed
+            if event == sg.WINDOW_CLOSED:
+                return -1
+            elif event == "Update":
+                return 0
+            else:
+                return 1
 
 
 def selectMode():
@@ -401,23 +406,58 @@ def selectBranch(value):
 
 
 def askRestartSteam():
-    layout = [
-        [sg.Text("To apply these changes, we need to restart steam. Continue ?")],
-        [sg.Button("YES"), sg.Button("NO")],
-    ]
-    window = sg.Window("NoUpdate Launcher", layout)
-
-    while True:
-        event, values = window.read()
-        window.close()
-        if event == "YES":
-            restartSteam()
+    if args.no_steam:
         return
+    elif args.steam:
+        restartSteam()
+    else:
+        layout = [
+            [sg.Text("To apply these changes, we need to restart steam. Continue ?")],
+            [sg.Button("YES"), sg.Button("NO")],
+        ]
+        window = sg.Window("NoUpdate Launcher", layout)
+
+        while True:
+            event, values = window.read()
+            window.close()
+            if event == "YES":
+                restartSteam()
+            return
 
 
 parser = argparse.ArgumentParser()
+parser.add_argument("-a", "--appid", type=str, help="the app id", required=False)
 parser.add_argument(
-    "-a", "--appid", metavar="appid", type=str, help="the app id", required=False
+    "-y",
+    "--update",
+    action="store_true",
+    help="allow update if available",
+    required=False,
+    default=False,
+)
+parser.add_argument(
+    "-n",
+    "--no-update",
+    action="store_true",
+    help="block update if available",
+    required=False,
+    default=False,
+)
+parser.add_argument(
+    "-s",
+    "--steam",
+    action="store_true",
+    help="skip steam prompt and allow restart",
+    required=False,
+    default=False,
+)
+parser.add_argument(
+    "-ns",
+    "--no-steam",
+    action="store_true",
+    help="skip steam prompt and deny restart",
+    required=False,
+    default=False,
 )
 args = parser.parse_args()
 
