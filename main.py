@@ -40,11 +40,11 @@ def getSteamInstallDir():
 def getSteamLibraries(steamDir):
     libs = [steamDir]
     with open(os.path.join(steamDir, "steamapps", "libraryfolders.vdf"), "r") as f:
-        data = vdf.load(f)["LibraryFolders"]
+        data = vdf.load(f)["libraryfolders"]
         i = 1
         while True:
             if str(i) in data:
-                libs.append(data[str(i)])
+                libs.append(data[str(i)]["path"])
                 i += 1
             else:
                 break
